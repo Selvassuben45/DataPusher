@@ -27,7 +27,7 @@ describe('Account Search API', () => {
             .set('Authorization', `Bearer ${testToken}`)
             .send({});
         expect(res.statusCode).toEqual(400);
-        expect(res.body.message).toEqual('Invalid Data: account_name is required');
+        expect(res.body.errors[0].msg)?.toEqual('Invalid Data: account_name is required');
     });
 
     it('should return 200 and data if account_name exists', async () => {

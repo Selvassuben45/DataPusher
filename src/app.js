@@ -23,12 +23,12 @@ app.listen(PORT, () => {
 const sequelize = require('./config/db');
 sequelize.sync({ force: false })
   .then(() => {
-    // console.log('Database & tables created!');
+    console.log('Database & tables created!');
   })
   .catch(err => {
     console.log(err);
 
-    // console.error('Database Sync Error: ', err);
+    console.error('Database Sync Error: ', err);
   });
 
 sequelize.authenticate()

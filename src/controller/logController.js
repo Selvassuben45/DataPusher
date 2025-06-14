@@ -72,18 +72,18 @@ const searchLogs = async (req, res) => {
         if (!event_id && !status && !account_id) {
             return res.status(400).json({ success: false, message: 'At least one search parameter is required.' });
         }
-        const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
-        const cachedData = await redis.get(cacheKey);
+        // const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
+        // const cachedData = await redis.get(cacheKey);
 
-        if (cachedData) {
-            console.log('Serving from cache');
-            return res.status(200).json({
-                success: true,
-                source: 'cache',
-                data: JSON.parse(cachedData)
-            });
-        }
-        console.log('Serving from database');
+        // if (cachedData) {
+        //     console.log('Serving from cache');
+        //     return res.status(200).json({
+        //         success: true,
+        //         source: 'cache',
+        //         data: JSON.parse(cachedData)
+        //     });
+        // }
+        // console.log('Serving from database');
         const whereClause = {};
         if (event_id) whereClause.event_id = { [Op.like]: `%${event_id}%` };
         if (status) whereClause.status = { [Op.like]: `%${status}%` };
@@ -99,14 +99,14 @@ const searchLogs = async (req, res) => {
                 message: 'Logs not found'
             });
         }
-        await redis.set(cacheKey, JSON.stringify(logs), 'EX', 300);
+        // await redis.set(cacheKey, JSON.stringify(logs), 'EX', 300);
 
-        return res.status(200).json({
-            success: true,
-            source: 'database',
-            data: logs
-        });
-        // return res.status(200).json({ success: true, data: logs });
+        // return res.status(200).json({
+        //     success: true,
+        //     source: 'database',
+        //     data: logs
+        // });
+        return res.status(200).json({ success: true, data: logs });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'Server Error', error: error.message });
     }

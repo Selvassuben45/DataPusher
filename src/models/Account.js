@@ -35,6 +35,9 @@ const Account = sequelize.define('Account', {
     }
 });
 
+Account.associate = (models) => {
+    Account.hasMany(models.Log, { foreignKey: 'AccountId', as: 'Logs' });
+};
 
 
 module.exports = Account;

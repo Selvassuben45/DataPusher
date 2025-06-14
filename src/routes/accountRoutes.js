@@ -42,7 +42,7 @@ const validateUpdateAccount = [
 ];
 
 const validateSearchAccount = [
-    body('account_name').notEmpty().withMessage('Account name is required'),
+    body('account_name').notEmpty().withMessage('Invalid Data: account_name is required'),
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

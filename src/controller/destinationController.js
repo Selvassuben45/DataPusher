@@ -147,18 +147,18 @@ const deleteDestination = async (req, res) => {
 const searchDestinations = async (req, res) => {
     try {
         const { url, http_method, AccountId } = req.body;
-const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
-        const cachedData = await redis.get(cacheKey);
+// const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
+//         const cachedData = await redis.get(cacheKey);
 
-        if (cachedData) {
-            console.log('Serving from cache');
-            return res.status(200).json({
-                success: true,
-                source: 'cache',
-                data: JSON.parse(cachedData)
-            });
-        }
-        console.log('Serving from database');
+        // if (cachedData) {
+        //     console.log('Serving from cache');
+        //     return res.status(200).json({
+        //         success: true,
+        //         source: 'cache',
+        //         data: JSON.parse(cachedData)
+        //     });
+        // }
+        // console.log('Serving from database');
         if (!url && !http_method && !AccountId) {
             return res.status(400).json({ success: false, message: 'At least one search parameter is required' });
         }
@@ -175,14 +175,14 @@ const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
   if (destinations.length === 0) {
             return res.status(404).json({ success: false, message: 'Destination not found' });
         }
-         await redis.set(cacheKey, JSON.stringify(destinations), 'EX', 300);
+        //  await redis.set(cacheKey, JSON.stringify(destinations), 'EX', 300);
 
-                return res.status(200).json({
-                    success: true,
-                    source: 'database',
-                    data: destinations
-                });
-        // return res.status(200).json({ success: true, data: destinations });
+        //         return res.status(200).json({
+        //             success: true,
+        //             source: 'database',
+        //             data: destinations
+        //         });
+        return res.status(200).json({ success: true, data: destinations });
     } catch (error) {
         return res.status(500).json({ success: false, message: 'Server Error', error: error.message });
     }

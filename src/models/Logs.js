@@ -37,5 +37,8 @@ const Log = sequelize.define('Log', {
     createdAt: 'created_at',
     updatedAt: 'updated_at'
 });
+Log.associate = (models) => {
+    Log.belongsTo(models.Account, { foreignKey: 'AccountId', as: 'Account' });
+};
 
 module.exports = Log;

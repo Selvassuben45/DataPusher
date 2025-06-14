@@ -107,22 +107,77 @@ const deleteAccount = async (req, res) => {
     }
 };
 
+// const searchAccounts = async (req, res) => {
+//     try {
+//         const { account_name } = req.body;
+//    if (!account_name) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'Invalid Data: account_name is required'
+//             });
+//         }
+//         // const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
+//         // const cachedData = await redis.get(cacheKey);
+
+//         // if (cachedData) {
+//         //     console.log('Serving from cache');
+//         //     return res.status(200).json({
+//         //         success: true,
+//         //         source: 'cache',
+//         //         data: JSON.parse(cachedData)
+//         //     });
+//         // }
+
+//         // console.log('Serving from database');
+//         const accounts = await Account.findAndCountAll({
+//             where: { account_name: { [Op.like]: `%${account_name}%` } }
+//         });
+
+//         if (accounts.count === 0) {
+//             return res.status(404).json({ success: false, message: 'Account not found' });
+//         }
+
+//         // await redis.set(cacheKey, JSON.stringify(accounts), 'EX', 300);
+
+//         // return res.status(200).json({
+//         //     success: true,
+//         //     source: 'database',
+//         //     data: accounts
+//                 return res.status(200).json({ success: true, data: accounts });
+
+//         // });
+//     } catch (error) {
+//         console.error('Error searching accounts:', error);
+//         return res.status(500).json({
+//             success: false,
+//             message: 'Server error',
+//             error: error.message
+//         });
+//     }
+// };
 const searchAccounts = async (req, res) => {
     try {
         const { account_name } = req.body;
-        const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
-        const cachedData = await redis.get(cacheKey);
-
-        if (cachedData) {
-            console.log('Serving from cache');
-            return res.status(200).json({
-                success: true,
-                source: 'cache',
-                data: JSON.parse(cachedData)
+           if (!account_name) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid Data: account_name is required'
             });
         }
 
-        console.log('Serving from database');
+        // const cacheKey = `search_accounts_${JSON.stringify(req.body)}`;
+        // const cachedData = await redis.get(cacheKey);
+
+        // if (cachedData) {
+        //     console.log('Serving from cache');
+        //     return res.status(200).json({
+        //         success: true,
+        //         source: 'cache',
+        //         data: JSON.parse(cachedData)
+        //     });
+        // }
+
+        // console.log('Serving from database');
         const accounts = await Account.findAndCountAll({
             where: { account_name: { [Op.like]: `%${account_name}%` } }
         });
@@ -131,13 +186,15 @@ const searchAccounts = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Account not found' });
         }
 
-        await redis.set(cacheKey, JSON.stringify(accounts), 'EX', 300);
+        // await redis.set(cacheKey, JSON.stringify(accounts), 'EX', 300);
 
-        return res.status(200).json({
-            success: true,
-            source: 'database',
-            data: accounts
-        });
+        // return res.status(200).json({
+        //     success: true,
+        //     source: 'database',
+        //     data: accounts
+                        return res.status(200).json({ success: true, data: accounts });
+
+        // });
     } catch (error) {
         console.error('Error searching accounts:', error);
         return res.status(500).json({
@@ -147,7 +204,6 @@ const searchAccounts = async (req, res) => {
         });
     }
 };
-
 module.exports = {
     createAccount,
     getAccount,
